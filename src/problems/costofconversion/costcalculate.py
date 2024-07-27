@@ -1,7 +1,7 @@
 import logging
 
 class ConversionData:
-    def __init__(self: list, source: list, destination: list, origin: list, changed: list, cost: list):
+    def __init__(self, source: str, destination: str, origin: list, changed: list, cost: list):
         self.source = source
         self.destination = destination
         self.origin = origin
@@ -16,10 +16,19 @@ class ConversionExecutor:
     """ 
     Check input is a valid array and input is not empty
     """
-    def _checkinput(self, inp: list, name="input"):
+    def _checkinput(self, inp, name="input"):
         msg = ""
-        if not inp:
-            msg = "Invalid {}. {} array must not be empty.".format(name, name)
+        match name:
+            case "source" | "destination":
+                if not isinstance(inp, str):
+                    msg = "Invalid {}. {} must be a string.".format(name, name)
+                if not inp:
+                    msg = "Invalid {}. {} must not be empty.".format(name, name)
+            case "origin" | "changed" | "cost":
+                if not isinstance(inp, list):
+                    msg = "Invalid {}. {} must be an array.".format(name, name)
+                if not inp:
+                    msg = "Invalid {}. {} array must not be empty.".format(name, name)
         
         if msg != "":
             raise ValueError(msg)
